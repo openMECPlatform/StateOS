@@ -1,0 +1,160 @@
+Stateless NF tutorial
+
+prepare redis:
+
+##################
+# 1.Install redis#
+##################
+sudo apt-get install redis-server
+
+#Test redis server
+ps -ef | grep redis
+
+redis     1977     1  0 05:51 ?        00:00:00 /usr/bin/redis-server 127.0.0.1:6379       
+ubuntu    1990  1364  0 05:53 pts/0    00:00:00 grep --color=auto redis
+
+#Test listen port
+netstat -nlt|grep 6379
+
+tcp        0      0 127.0.0.1:6379          0.0.0.0:*               LISTEN
+
+#Change configuration file passwort
+sudo vim /etc/redis/redis.conf
+
+# requirepass foobared
+requirepass 123456
+
+#restart the redis-server
+sudo /etc/init.d/redis-server restart
+
+#########################
+# 2.intsall redis client#
+#########################
+tar -zxvf hiredis-1.0.0.tar.gz
+
+make
+
+sudo make install
+
+#redis basic commands
+
+#login redis
+
+>redis-cli(or redis-cli -h 127.0.0.1 -p 6379)
+
+>auth 123456(passwort)
+
+>keys * //check all keys
+
+#clean objects in redis
+
+>del key //delete a certain key
+
+>Flushdb //delete all current keys
+
+>flushall //delete all keys from all database
+
+Run Stateless NF
+
+##############################
+#3. install stateless library#
+##############################
+cp -r stless ~
+
+make
+
+sudo make install
+
+
+##########################################
+#begin scalability test using stateless NF
+##########################################
+
+#1.start topology
+sudo python tutorial_topo_connac.py
+
+#2.start floodlight 1.2
+cd /home/godbestway/tutorial/floodlight-1.2
+
+java -jar target/floodlight.jar
+
+#3.Change configuration file ip address
+sudo vim /etc/redis/redis.conf
+
+#bind 127.0.0.1
+bind 192.168.0.254
+
+sudo service redis-server restart
+
+#4.install prads
+cd prads/src
+
+vim config.c
+
+#adapt the configPath to your address
+
+cd ..
+
+make
+
+sudo make install
+
+#5. run stateless controller
+java -jar stateless_controller.jar
+
+#6.Run command in mininet Xterm, prads1 is master NF, prads2 is backup NF
+xterm h1 h2 h3
+
+#xterm h1
+bash traceload_server.sh h1-eth0 . 192.168.0.1 8080
+
+#xterm h2
+prads -i h2-eth0
+
+#change config.txt
+vim ~/statelessNF/prads_stless/src/config.txt
+
+IsRedisBackup=1
+
+#xterm h3
+prads -i h3-eth0
+
+#xterm h2, stop NF1, NF2 will take the charge and receive the packet automactically
+ctrl+c
+
+#Rerun the stateless, must clean the redis first
+>redis-cli -h 192.168.0.254 -p 6379
+
+>auth 123456
+
+>flushall
+
+For firewall and NAT
+
+# Adapt the the configPath in stlessM.c to your system 
+vim stlessM.c
+
+make
+
+./firewall h2-eth0
+
+./firewall h3-eth0
+
+./nat h2-eth0 h2-eth1 192.168.0.254
+
+./nat h3-eth0 h3-eth1 192.168.0.254
+
+
+##Firewall, NAT stlessM.c is mainly used for statelessNF
+##prads, please see the config.c
+
+
+
+
+
+
+
+
+
+
+

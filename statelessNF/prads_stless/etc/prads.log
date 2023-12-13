@@ -1,0 +1,15 @@
+asset,vlan,port,proto,service,[service-info],distance,discovered
+10.81.1.248,0,20684,6,SYN,[S44:64:1:52:M1460,N,W8,N,N,S:.:Windows:XP/2000 (RFC1323+, w+, tstamp-):link:ethernet/modem],0,1612424955
+220.181.107.249,0,443,6,SYNACK,[8192:50:1:52:M1452,N,W5,N,N,S:A:unknown:unknown:link:pppoe (DSL)],14,1612424955
+10.81.1.248,0,443,6,CLIENT,[unknown:@https],0,1612424955
+220.181.107.249,0,443,6,SERVER,[unknown:@https],19,1612424955
+58.247.206.246,0,443,6,FIN,[166:48:1:40:.:AFN:unknown:unknown],16,1612424956
+10.81.1.248,0,20625,6,FIN,[257:64:1:40:.:AFN:unknown:unknown],0,1612424956
+58.247.206.246,0,443,6,RST,[0:48:1:40:.:.:FreeBSD:4.8 (Linux?) (dropped)],16,1612424956
+118.25.167.139,0,443,6,SERVER,[unknown:@https],14,1612424957
+58.247.206.246,0,443,6,SYNACK,[S10:48:1:52:M1440,N,N,S,N,W7:ZA:unknown:unknown:link:IPv6/IPIP],16,1612424958
+58.247.206.246,0,443,6,SERVER,[unknown:@https],16,1612424958
+10.81.1.248,0,53,17,CLIENT,[unknown:@domain],0,1612424959
+10.100.10.3,0,53,17,SERVER,[unknown:@domain],5,1612424959
+42.236.37.48,0,53,17,SERVER,[unknown:@domain],15,1612424959
+10.81.1.248,0,20684,6,RST,[0:64:1:40:.:KA:Windows:Win2K (UC)/Win7/2008R2],0,1612424960

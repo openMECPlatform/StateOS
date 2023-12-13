@@ -1,0 +1,13 @@
+These two new NFs matching OpenNF controller.
+
+OpenNF controller and PRADS can be found here: https://opennf.cs.wisc.edu
+
+Just run OpenNF controller and two new NFs in Xterm h2 and h3 using mininet tutorial_topo.py
+
+./firewall h2-eth0
+
+./firewall h3-eth0
+
+./nat h2-eth0 h2-eth1 192.168.0.254
+
+./nat h3-eth0 h3-eth1 192.168.0.254

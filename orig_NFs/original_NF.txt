@@ -1,0 +1,42 @@
+These two NFs are original NFs.
+
+1. Original Firewall
+
+define rules.conf
+
+make
+
+./firewall interface
+
+example:
+
+tcpreplay -i *.pcap 
+
+./firewall eth0
+
+2. Original NAT
+
+Usage: ./nat internal_interface external_interface gateway_IP
+
+sudo python NAT-ori/router_test.py
+
+xterm h2
+
+iptables -t filter -A INPUT -p tcp -j DROP
+ ./nat h2-eth1 h2-eth0 10.0.10.254
+ 
+xterm h3
+ip route add 10.0.0.0/16 via 192.168.0.2
+
+change client.c
+ip 10.0.0.1
+
+xterm h1 
+./server
+
+xterm h3
+./client
+
+
+
+

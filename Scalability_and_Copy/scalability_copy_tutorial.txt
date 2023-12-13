@@ -1,0 +1,376 @@
+#Install library and config file, this library is used for all methods,
+#StateOS technique, common dac technique, advanced dac technique
+
+sudo mkdir -p /home/stateos/
+
+sudo cp config.properties /home/stateos/config.properties
+
+###dac libary must be combined with NF, Every NF machine must install this libary###
+
+cd dac-library
+
+make
+
+sudo make install
+
+#install floodlight
+
+tar -xzvf floodlight-1.2.tar.gz
+
+#install protobuf
+sudo apt-get install autoconf automake libtool curl make g++ unzip
+git clone https://github.com/protocolbuffers/protobuf.git
+cd protobuf
+git submodule update --init --recursive
+./autogen.sh
+./configure
+make
+make check  
+sudo make install
+sudo ldconfig
+
+#install protobuf-c
+sudo apt-get install pkg-config pkgconf
+
+git clone https://github.com/protobuf-c/protobuf-c.git
+./autogen.sh && ./configure && make && sudo make install
+sudo ldconfig
+
+#####For example, see test-proto files##########
+protoc --c_out=. student.proto
+gcc student.c student.pb-c.c -o student -lprotobuf-c
+
+#######This one is used for windows version, just unzip the package protoc-3.14.0-win64
+D:\java\LearnProtobuf\protoc-3.14.0-win64\bin
+protoc.exe -I=. --java_out=./ Information.proto
+
+###################################Scalability#############################################
+
+###used for all versions
+
+java -jar floodlight-1.2/target/floodlight.jar
+
+cd Scalability
+
+sudo python tutorial_topo_dac.py 
+
+############################################
+###1. Tutorial for framework-only version###
+############################################
+cd framework_only
+
+java -jar stateos.jar
+
+sudo vim /home/stateos/config.properties
+
+OnlyFramework = 1
+AdvanceMode = 0
+
+sudo vim /usr/local/etc/config.conf
+
+ctrl_share = 1
+ctrl_sfc = 0
+ctrl_adnatfire = 0
+ctrl_copy = 0
+
+#xterm h1
+bash traceload_server.sh h1-eth0 . 192.168.0.1 8080
+
+###Test prads###
+
+cd stateos-prads
+
+sudo make install
+
+#xterm h2
+
+prads -i h2-eth0
+
+#xterm h3
+
+prads -i h3-eth0
+
+###Test firewall###
+
+#xterm h2
+cd stateos-firewall/firewall/
+./firewall h2-eth0
+
+#xterm h3
+cd stateos-firewall/firewall/
+./firewall h3-eth0
+
+###Test NAT###
+
+#xterm h2
+cd stateos-NAT
+./nat h2-eth0 h2-eth1 192.168.0.254
+
+#xterm h3
+cd stateos-NAT
+./nat h3-eth0 h3-eth1 192.168.0.254
+
+############################################
+###2. Tutorial for common dac techique###
+############################################
+
+cd common_dac_technique
+
+java -jar common_dac_technique.jar
+
+sudo vim /home/stateos/config.properties
+
+OnlyFramework = 0
+AdvanceMode = 0
+
+sudo vim /usr/local/etc/config.conf
+
+ctrl_share = 0
+ctrl_sfc = 0
+ctrl_adnatfire = 0
+ctrl_copy = 0
+
+#xterm h1
+bash traceload_server.sh h1-eth0 . 192.168.0.1 8080
+
+###Test prads###
+
+cd prads
+
+sudo make install
+
+#xterm h2
+
+prads -i h2-eth0
+
+#xterm h3
+
+prads -i h3-eth0
+
+###Test firewall###
+
+#xterm h2
+cd dac-firewall
+./firewall h2-eth0
+
+#xterm h3
+cd dac-firewall
+./firewall h3-eth0
+
+###Test NAT###
+
+#xterm h2
+cd dac-NAT
+./nat h2-eth0 h2-eth1 192.168.0.254
+
+#xterm h3
+cd dac-NAT
+./nat h3-eth0 h3-eth1 192.168.0.254
+
+
+##############################################
+###3. Tutorial for advanced dac techique###
+##############################################
+
+cd advanced_connac_technique
+
+java -jar new_ad_connac.jar
+
+sudo vim /home/StateOS/config.properties
+
+OnlyFramework = 0
+AdvanceMode = 1
+
+
+sudo vim /usr/local/etc/config.conf
+
+ctrl_share = 0
+ctrl_sfc = 0
+ctrl_adnatfire = 1
+ctrl_copy = 0
+
+#xterm h1
+bash traceload_server.sh h1-eth0 . 192.168.0.1 8080
+
+###Test prads###
+
+cd new-ad-prads
+
+sudo make install
+
+#xterm h2
+
+prads -i h2-eth0
+
+#xterm h3
+
+prads -i h3-eth0
+
+###Test firewall###
+
+#xterm h2
+cd new-ad-firewall
+./firewall h2-eth0
+
+#xterm h3
+cd new-ad-firewall
+./firewall h3-eth0
+
+###Test NAT###
+
+#xterm h2
+cd new-ad-NAT
+./nat h2-eth0 h2-eth1 192.168.0.254
+
+#xterm h3
+cd new-ad-NAT
+./nat h3-eth0 h3-eth1 192.168.0.254
+
+
+
+###################################Copy#############################################
+
+java -jar floodlight-1.2/target/floodlight.jar
+
+cd Copy
+
+sudo python tutorial_topo_connac.py 
+
+
+############################################
+###1. Tutorial for framework-only version###
+############################################
+
+1. Tutorial for framework-only version
+
+cd framework_only_version
+
+java -jar StateOS_copy.jar
+
+sudo vim /home/StateOS/config.properties
+
+OnlyFramework = 1
+
+
+sudo vim /usr/local/etc/config.conf
+
+ctrl_share = 1
+ctrl_sfc = 0
+ctrl_adnatfire = 0
+ctrl_copy = 1
+
+#xterm h1
+bash traceload_server.sh h1-eth0 . 192.168.0.1 8080
+
+###Test prads###
+
+cd StateOSCopyprads
+
+sudo make install
+
+#xterm h2
+
+prads -i h2-eth0
+
+#xterm h3
+
+prads -i h3-eth0
+
+############################################
+###2. Tutorial for common dac techique###
+############################################
+
+cd common_connac_version
+
+java -jar copy.jar
+
+sudo vim /home/stateos/config.properties
+
+OnlyFramework = 0
+AdvanceMode = 0
+
+sudo vim /usr/local/etc/config.conf
+
+ctrl_share = 0
+ctrl_sfc = 0
+ctrl_adnatfire = 0
+ctrl_copy = 1
+
+#xterm h1
+bash traceload_server.sh h1-eth0 . 192.168.0.1 8080
+
+###Test prads###
+
+cd prads
+
+sudo make install
+
+#xterm h2
+
+prads -i h2-eth0
+
+#xterm h3
+
+prads -i h3-eth0
+
+############################################
+###3. Tutorial for advanced dac techique#
+############################################
+
+
+cd advanced_connac_version
+
+java -jarnew_ad_connac_copy.jar
+
+sudo vim /home/StateOS/config.properties
+
+#make sure OnlyFramework = 0;
+OnlyFramework = 0
+AdvanceMode = 1
+
+
+sudo vim /usr/local/etc/config.conf
+
+ctrl_share = 0
+ctrl_sfc = 0
+ctrl_adnatfire = 1
+ctrl_copy = 1
+
+#xterm h1
+bash traceload_server.sh h1-eth0 . 192.168.0.1 8080
+
+###Test prads###
+
+cd new-ad-coypPrads
+
+sudo make install
+
+#xterm h2
+
+prads -i h2-eth0
+
+#xterm h3
+
+prads -i h3-eth0
+
+#Change the NF code
+#Prads, cxt.c prads.c asset.c
+#Firewall, state.c read.c
+#NAT table.c nat.c
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

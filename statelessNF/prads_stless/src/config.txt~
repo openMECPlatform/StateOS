@@ -1,0 +1,15 @@
+#RedisServerConfigStart
+
+#RedisServerIP
+#RedisServerIP=127.0.0.1
+RedisServerIP=192.168.0.254
+
+#RedisServerPort
+RedisServerPort=6379
+
+#RedisServerPass
+RedisServerPass=123456
+
+#IsRedisBackup
+IsRedisBackup=0
+#RedisServerConfigEnd
